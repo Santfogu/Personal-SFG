@@ -5,9 +5,19 @@ let serieTable: HTMLElement = document.getElementById("serie")!;
 let estadisticasTable: HTMLElement = document.getElementById("estadisticas")!;
 let serieCard: HTMLElement = document.getElementById("cardSerie")!;
 
+
 mostrarDatosSeries(series)
 mostrarEstadisticas(series)
-mostrarInfoSerie(series[0])
+
+
+let btns: HTMLCollection = document.getElementsByClassName("btn")!;
+
+for (var i = 0; i < btns.length; i++) 
+{
+    let btn: HTMLElement = document.getElementById(btns[i].id)!;
+    let serie: Serie = series[Number(btns[i].id)-1];
+    btn.addEventListener("click", (e:Event) => mostrarInfoSerie(serie));
+}
 
 function mostrarDatosSeries(series: Array<Serie>):void
 {
@@ -16,10 +26,11 @@ function mostrarDatosSeries(series: Array<Serie>):void
     {
         let trElement: HTMLElement = document.createElement("tr");
         trElement.innerHTML = `<td>${serieAct.id}</td>
-                                <td>${serieAct.name}</td>
+                                <td><input type="button" value="${serieAct.name}" id=${serieAct.id} class="btn"></input></td>
                                 <td>${serieAct.channel}</td>
                                 <td>${serieAct.seasons}</td>`;
         tbodySerie.appendChild(trElement);
+        let btnActual: HTMLElement = document.getElementById(`button ${serieAct.id}`)!; 
     }
     serieTable.appendChild(tbodySerie);
 }
@@ -43,8 +54,10 @@ function mostrarEstadisticas(series: Array<Serie>):void
 function mostrarInfoSerie(serie: Serie):void
 {
     let content =   `<img class="card-img-top" src="${serie.image}">
-                    <div class="card-body">
-                    <p class="card-text">${serie.descripcion}\n${serie.web}</p>
+                    <div class="card-body" style="font-size:1vw">
+                    <h3>${serie.name}</h3>
+                    <p class="card-text">${serie.descripcion}\n</p>
+                    <p class="card-text" style="color:#0000FF">${serie.web}</p>
                     </div>`
     serieCard.innerHTML = content;
 }
